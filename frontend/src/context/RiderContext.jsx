@@ -20,7 +20,7 @@ const RiderContextProvider = ({ children }) => {
     phone: "",
   });
 
-  const url = "http://localhost:4000";
+  const url = "https://quickbite-1-tes3.onrender.com";
 
   // ---------------- FOOD LIST ----------------
   const fetchFoodList = async () => {
