@@ -15,7 +15,7 @@ export const AdminProvider = ({ children }) => {
   });
   const [loading, setLoading] = useState(true);
 
-  const url = "http://localhost:4000"; // backend URL
+  const url = "https://quickbite-1-tes3.onrender.com"; // backend URL
 
   // ---------------- LOGIN ----------------
   const loginAdmin = async (token) => {
