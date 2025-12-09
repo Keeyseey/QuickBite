@@ -16,7 +16,7 @@ const StoreContextProvider = ({ children }) => {
   const [promoCode, setPromoCode] = useState("");
   const [discount, setDiscount] = useState(0);
 
-  const url = "http://localhost:4000";
+  const url = "https://quickbite-1-tes3.onrender.com";
 
   // Helper to produce a safe user object for the UI
   const normalizeUser = (u = {}) => {
