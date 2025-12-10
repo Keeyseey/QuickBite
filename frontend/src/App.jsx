@@ -35,8 +35,11 @@ const AppRoutes = () => {
   const { role: userRole, loading: userLoading } = useContext(StoreContext);
 
   const loading = riderLoading || userLoading;
+
+  // Rider always takes priority
   const role = riderRole ? "rider" : userRole ? "user" : null;
 
+  // Rider Welcome redirect
   useEffect(() => {
     if (!loading && role === "rider") {
       const show = sessionStorage.getItem("showRiderWelcome");
@@ -49,6 +52,7 @@ const AppRoutes = () => {
 
   if (loading) return <div>Loading...</div>;
 
+  // Determine which navbar to show
   const showNavbar = !(role === "rider" && location.pathname === "/rider-welcome");
 
   return (
@@ -62,27 +66,18 @@ const AppRoutes = () => {
         />
       )}
 
-      {/* FIXED — navbar rendering ONLY inside return */}
-      {showNavbar &&
-        (role === "rider" ? (
-          <RiderNavbar />
-        ) : role === "user" ? (
-          <Navbar setShowLogin={setShowLogin} />
-        ) : null)}
+      {/* Navbar */}
+      {showNavbar && (role === "rider" ? <RiderNavbar /> : <Navbar setShowLogin={setShowLogin} />)}
 
       <div className="app">
         <Routes>
+          {/* Default Route */}
           <Route
             path="/"
-            element={
-              role === "rider" ? (
-                <Navigate to="/rider-dashboard" replace />
-              ) : (
-                <Home />
-              )
-            }
+            element={role === "rider" ? <Navigate to="/rider-dashboard" replace /> : <Home />}
           />
 
+          {/* User Routes */}
           {role === "user" && (
             <>
               <Route path="/cart" element={<Cart />} />
@@ -94,6 +89,7 @@ const AppRoutes = () => {
             </>
           )}
 
+          {/* Rider Login */}
           <Route
             path="/rider-login"
             element={
@@ -105,8 +101,10 @@ const AppRoutes = () => {
             }
           />
 
+          {/* Rider Welcome */}
           <Route path="/rider-welcome" element={<RiderWelcome />} />
 
+          {/* Rider Private Routes */}
           {role === "rider" && (
             <>
               <Route
@@ -128,12 +126,13 @@ const AppRoutes = () => {
             </>
           )}
 
+          {/* Fallback */}
           <Route path="*" element={<div>404 Not Found</div>} />
         </Routes>
       </div>
 
-      {/* FIXED — Footer only for user */}
-      {role === "user" && <Footer />}
+      {/* Footer only for user or guest */}
+      {(role === "user" || role === null) && <Footer />}
     </>
   );
 };
