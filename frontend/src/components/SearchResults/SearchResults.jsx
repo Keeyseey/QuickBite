@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useLocation } from 'react-router-dom';
-import FoodItem from '../FoodItem/FoodItem'; // adjust path as needed
+import FoodItem from '../FoodItem/FoodItem';
 import './SearchResults.css';
+import { StoreContext } from '../../context/StoreContext';
 
-// Custom hook to read query params
 function useQuery() {
     return new URLSearchParams(useLocation().search);
 }
@@ -14,10 +14,12 @@ const SearchResults = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
 
+    const { url } = useContext(StoreContext); // ✔ Get backend URL
+
     useEffect(() => {
         const fetchResults = async () => {
             try {
-                const response = await fetch(`http://localhost:4000/api/food/search?query=${query}`);
+                const response = await fetch(`${url}/api/food/search?query=${query}`);
                 
                 if (response.status === 404) {
                     setResults([]);
@@ -36,7 +38,7 @@ const SearchResults = () => {
         };
 
         fetchResults();
-    }, [query]);
+    }, [query, url]);
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>{error}</p>;
