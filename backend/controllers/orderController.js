@@ -51,23 +51,6 @@ export const placeOrder = async (req, res) => {
         if (!location || typeof location.lat !== "number" || typeof location.lng !== "number")
             return res.status(400).json({ success: false, message: "Exact delivery location required" });
 
-        // Save order
-        const newOrder = new orderModel({
-            userId,
-            items,
-            amount,
-            deliveryFee,
-            distance,
-            address,
-            location,
-            rider: null
-        });
-
-        await newOrder.save();
-
-        // Clear cart
-        await userModel.findByIdAndUpdate(userId, { cartData: {} });
-
         // Stripe checkout creation
         const stripe = getStripe();
         let session_url = null;
@@ -93,21 +76,68 @@ export const placeOrder = async (req, res) => {
                 });
             }
 
+            // Pass all order data via query params to verify endpoint
             const session = await stripe.checkout.sessions.create({
                 line_items,
                 mode: "payment",
-                success_url: `${frontend_url}/verify?success=true&orderId=${newOrder._id}`,
-                cancel_url: `${frontend_url}/verify?success=false&orderId=${newOrder._id}`,
+                success_url: `${frontend_url}/verify?success=true&userId=${userId}&items=${encodeURIComponent(JSON.stringify(items))}&amount=${amount}&deliveryFee=${deliveryFee}&distance=${distance}&address=${encodeURIComponent(JSON.stringify(address))}&location=${encodeURIComponent(JSON.stringify(location))}`,
+                cancel_url: `${frontend_url}/verify?success=false`,
             });
 
             session_url = session.url;
         }
 
-        res.json({ success: true, orderId: newOrder._id, session_url });
+        res.json({ success: true, session_url }); // no order saved yet
 
     } catch (error) {
         console.error("Place Order Error:", error);
         res.status(500).json({ success: false, message: "Error placing order" });
+    }
+};
+
+// ======================================================
+// VERIFY ORDER PAYMENT
+// ======================================================
+export const verifyOrder = async (req, res) => {
+    const { success } = req.query;
+
+    try {
+        if (success === "true") {
+            // Extract order data from query params
+            const userId = req.query.userId;
+            const items = JSON.parse(req.query.items);
+            const amount = Number(req.query.amount);
+            const deliveryFee = Number(req.query.deliveryFee);
+            const distance = Number(req.query.distance);
+            const address = JSON.parse(req.query.address);
+            const location = JSON.parse(req.query.location);
+
+            // Create order only after successful payment
+            const newOrder = new orderModel({
+                userId,
+                items,
+                amount,
+                deliveryFee,
+                distance,
+                address,
+                location,
+                rider: null,
+                payment: true
+            });
+
+            await newOrder.save();
+
+            // Clear cart
+            await userModel.findByIdAndUpdate(userId, { cartData: {} });
+
+            return res.json({ success: true, message: "Paid", orderId: newOrder._id });
+        } else {
+            // Payment failed, do nothing
+            return res.json({ success: false, message: "Payment failed" });
+        }
+    } catch (error) {
+        console.error("Verify Order Error:", error);
+        res.status(500).json({ success: false, message: "Error verifying payment" });
     }
 };
 
