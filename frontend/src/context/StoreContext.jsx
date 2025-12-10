@@ -1,6 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import axios from "axios";
-import jwtDecode from "jwt-decode"; // correct import
+import {jwtDecode} from "jwt-decode"; // correct import
 
 export const StoreContext = createContext(null);
 
