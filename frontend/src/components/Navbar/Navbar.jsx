@@ -64,7 +64,7 @@ const Navbar = ({ setShowLogin, reviewMode = false }) => {
     if (!searchQuery || reviewMode) return setSuggestions([]);
     const fetchSuggestions = async () => {
       try {
-        const res = await fetch(`http://localhost:4000/api/food/search?query=${searchQuery}`);
+        const res = await fetch(`${url}/api/food/search?query=${searchQuery}`);
         if (res.ok) {
           const data = await res.json();
           setSuggestions(data);
@@ -92,7 +92,7 @@ const Navbar = ({ setShowLogin, reviewMode = false }) => {
     }
     if (!searchQuery) return;
     try {
-      const response = await fetch(`http://localhost:4000/api/food/search?query=${searchQuery}`);
+      const response = await fetch(`${url}/api/food/search?query=${searchQuery}`);
       if (response.status === 404) alert("Food not available");
       else navigate(`/search?query=${searchQuery}`);
     } catch (error) {
