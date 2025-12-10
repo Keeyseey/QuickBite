@@ -21,6 +21,7 @@ const orderRouter = express.Router();
 // =========================
 orderRouter.post("/place", authMiddleware, placeOrder);
 orderRouter.post("/verify", authMiddleware, verifyOrder);
+orderRouter.get("/verify", authMiddleware, verifyOrder);
 orderRouter.get("/userorders", authMiddleware, userOrders);
 
 // =========================
