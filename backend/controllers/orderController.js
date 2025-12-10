@@ -103,13 +103,25 @@ export const verifyOrder = async (req, res) => {
         const { success, orderId } = req.query;
         if (!orderId) return res.status(400).json({ success: false, message: "OrderId missing" });
 
+        const order = await orderModel.findById(orderId);
+        if (!order) return res.status(404).json({ success: false, message: "Order not found" });
+
         if (success === "true") {
-            await orderModel.findByIdAndUpdate(orderId, { payment: true });
-            return res.json({ success: true, message: "Payment verified", orderId });
+            // ✅ Mark payment as true
+            order.payment = true;
+            await order.save();
+
+            // ✅ Clear cart after successful payment
+            await userModel.findByIdAndUpdate(order.userId, { cartData: {} });
+
+            return res.json({ success: true, message: "Payment verified and cart cleared", orderId });
         } else {
-            // Payment failed → delete pending order
-            await orderModel.findByIdAndDelete(orderId);
-            return res.json({ success: false, message: "Payment failed" });
+            // ❌ Payment failed → leave order in DB (optional: mark as failed)
+            order.payment = false;
+            order.status = "Payment Failed";
+            await order.save();
+
+            return res.json({ success: false, message: "Payment failed, cart retained", orderId });
         }
     } catch (error) {
         console.error("Verify Order Error:", error);
