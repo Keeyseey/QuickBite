@@ -1,0 +1,172 @@
+/* AdminProfile.css — Modern Glass UI */
+
+.admin-profile {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  font-family: "Inter", sans-serif;
+  color: #2c2c2c;
+  box-sizing: border-box;
+}
+
+/* SECTION TITLE */
+.admin-profile h2 {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 25px;
+  color: #1a1a1a;
+  letter-spacing: -0.5px;
+  text-align: center;
+}
+
+/* FORM CARD */
+.admin-profile form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+
+  max-width: 480px;
+  width: 100%;
+  margin: 0 auto;
+
+  padding: 30px 35px;
+  border-radius: 18px;
+
+  backdrop-filter: blur(14px);
+  background: rgba(255, 255, 255, 0.65);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* LABEL */
+.admin-profile label {
+  font-size: 15px;
+  font-weight: 600;
+  color: #444;
+  margin-bottom: 6px;
+}
+
+/* INPUT FIELDS */
+.admin-profile input {
+  width: 100%;
+  padding: 12px 14px;
+  font-size: 15px;
+
+  border: 1px solid #dcdcdc;
+  background: #ffffffd9;
+  border-radius: 10px;
+
+  transition: all 0.25s ease;
+}
+
+.admin-profile input:focus {
+  border-color: #4f8cff;
+  box-shadow: 0 0 0 3px rgba(79, 140, 255, 0.25);
+  outline: none;
+}
+
+/* PROFILE IMAGE PREVIEW */
+.admin-profile img {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+
+  border-radius: 50%;
+  border: 3px solid #ffffffcc;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+
+  display: block;
+  margin: 10px auto;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.admin-profile img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+}
+
+/* BUTTON */
+.admin-profile button {
+  padding: 14px;
+  font-size: 16px;
+  font-weight: 600;
+
+  background: linear-gradient(135deg, #4285f4, #357ae8);
+  color: white;
+
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 15px rgba(66, 133, 244, 0.35);
+}
+
+.admin-profile button:hover:not(:disabled) {
+  background: linear-gradient(135deg, #357ae8, #2f6cd6);
+  transform: translateY(-2px);
+}
+
+.admin-profile button:disabled {
+  background: #a8c7ff;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* =============================
+      📱 MOBILE RESPONSIVE
+   ============================= */
+@media (max-width: 600px) {
+  .admin-profile {
+    padding: 20px 15px;
+  }
+
+  .admin-profile h2 {
+    font-size: 26px;
+  }
+
+  .admin-profile form {
+    padding: 25px 20px;
+    border-radius: 15px;
+  }
+
+  .admin-profile input {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .admin-profile button {
+    font-size: 15px;
+    padding: 12px;
+  }
+
+  .admin-profile img {
+    width: 95px;
+    height: 95px;
+  }
+}
+
+/* =============================
+      📱 TABLET RESPONSIVE
+   ============================= */
+@media (min-width: 601px) and (max-width: 900px) {
+  .admin-profile h2 {
+    font-size: 28px;
+  }
+
+  .admin-profile form {
+    max-width: 430px;
+  }
+
+  .admin-profile img {
+    width: 110px;
+    height: 110px;
+  }
+}

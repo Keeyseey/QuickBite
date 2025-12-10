@@ -1,0 +1,175 @@
+/* Full window container with dark shadow background */
+.rider-welcome-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Full viewport height */
+  width: 100vw;  /* Full viewport width */
+  background-color: #1e1e1e; /* dark shadow background */
+  overflow: hidden;
+  position: fixed; /* fixed ensures full coverage */
+  top: 0;
+  left: 0;
+  z-index: 999; /* above other elements */
+  padding: 10px; /* small padding for mobile */
+  animation: bgPulse 3s ease-in-out infinite alternate;
+}
+
+/* Background subtle pulse animation */
+@keyframes bgPulse {
+  0% { background-color: #1e1e1e; }
+  50% { background-color: #232323; }
+  100% { background-color: #1e1e1e; }
+}
+
+/* Optional subtle shadow effect */
+.rider-welcome-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  box-shadow: inset 0 0 50px rgba(0,0,0,0.6);
+  z-index: 0;
+}
+
+/* Card styling */
+.welcome-card {
+  background-color: #fff;
+  padding: 60px 80px;
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+  max-width: 500px;
+  width: 100%;
+  position: relative;
+  z-index: 1; /* above shadow overlay */
+  animation: fadeInScale 1s ease forwards;
+}
+
+/* Card fade in with slight scale */
+@keyframes fadeInScale {
+  0% { opacity: 0; transform: translateY(20px) scale(0.95); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Logo */
+.welcome-logo {
+  width: 120px;
+  margin-bottom: 25px;
+  animation: floatPulse 2.5s ease-in-out infinite;
+}
+
+/* Logo subtle float + pulse animation */
+@keyframes floatPulse {
+  0%   { transform: translateY(0) scale(1); }
+  25%  { transform: translateY(-5px) scale(1.05); }
+  50%  { transform: translateY(0) scale(1); }
+  75%  { transform: translateY(5px) scale(1.05); }
+  100% { transform: translateY(0) scale(1); }
+}
+
+/* Title */
+.welcome-title {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 15px;
+  color: #333;
+  animation: fadeInText 1.5s ease forwards;
+}
+
+/* Text */
+.welcome-text {
+  font-size: 18px;
+  margin-bottom: 35px;
+  color: #555;
+  animation: fadeInText 2s ease forwards;
+}
+
+/* Text fade in animation */
+@keyframes fadeInText {
+  0% { opacity: 0; transform: translateY(10px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Button */
+.welcome-btn {
+  background-color: tomato;
+  color: white;
+  padding: 14px 40px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 18px;
+  transition: all 0.3s ease;
+  animation: fadeInText 2.5s ease forwards;
+}
+
+.welcome-btn:hover {
+  background-color: darkred;
+  transform: translateY(-3px);
+}
+
+/* Responsive adjustments */
+
+/* Medium screens */
+@media (max-width: 1024px) {
+  .welcome-card {
+    padding: 50px 60px;
+  }
+  .welcome-title {
+    font-size: 28px;
+  }
+  .welcome-text {
+    font-size: 16px;
+  }
+  .welcome-logo {
+    width: 100px;
+  }
+  .welcome-btn {
+    font-size: 16px;
+    padding: 12px 35px;
+  }
+}
+
+/* Tablets */
+@media (max-width: 768px) {
+  .welcome-card {
+    padding: 40px 30px;
+  }
+  .welcome-title {
+    font-size: 24px;
+  }
+  .welcome-text {
+    font-size: 15px;
+  }
+  .welcome-logo {
+    width: 90px;
+  }
+  .welcome-btn {
+    font-size: 15px;
+    padding: 10px 30px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .welcome-card {
+    padding: 30px 20px;
+    border-radius: 15px;
+  }
+  .welcome-title {
+    font-size: 20px;
+  }
+  .welcome-text {
+    font-size: 14px;
+  }
+  .welcome-logo {
+    width: 80px;
+  }
+  .welcome-btn {
+    font-size: 14px;
+    padding: 10px 25px;
+  }
+}

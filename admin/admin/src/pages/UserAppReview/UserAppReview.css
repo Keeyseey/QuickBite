@@ -1,0 +1,120 @@
+/* Container */
+.user-app-review-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100vh;
+  background-color: #f5f6fa;
+  padding: 20px 40px;
+  box-sizing: border-box;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeSlideIn 0.8s ease forwards;
+}
+
+/* Header */
+.user-app-review-container h2 {
+  text-align: center;
+  margin: 10px 0;
+  color: #333;
+  font-size: 2rem;
+  font-weight: 700;
+  animation: fadeInText 1s ease forwards;
+}
+
+/* Subtext */
+.user-app-review-container p {
+  text-align: center;
+  color: #888;
+  margin-bottom: 20px;
+  font-size: 1rem;
+  animation: fadeInText 1.2s ease forwards;
+}
+
+/* Iframe styling */
+.user-app-review-container iframe {
+  flex: 1;
+  width: 100%;
+  border: 2px solid #ddd;
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.5s ease;
+  opacity: 0;
+  animation: fadeInIframe 1.4s ease forwards;
+}
+
+/* Hover effect for iframe */
+.user-app-review-container iframe:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+}
+
+/* Fade-in and slide animations */
+@keyframes fadeSlideIn {
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInText {
+  0% { opacity: 0; transform: translateY(10px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInIframe {
+  0% { opacity: 0; transform: scale(0.98); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* ----------------------------- */
+/* Responsive adjustments */
+/* ----------------------------- */
+@media (max-width: 1024px) {
+  .user-app-review-container {
+    padding: 20px 30px;
+  }
+
+  .user-app-review-container h2 {
+    font-size: 1.8rem;
+  }
+
+  .user-app-review-container p {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .user-app-review-container {
+    padding: 15px 20px;
+  }
+
+  .user-app-review-container h2 {
+    font-size: 1.6rem;
+  }
+
+  .user-app-review-container p {
+    font-size: 0.9rem;
+  }
+
+  .user-app-review-container iframe {
+    border-radius: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .user-app-review-container {
+    padding: 10px 10px;
+  }
+
+  .user-app-review-container h2 {
+    font-size: 1.4rem;
+  }
+
+  .user-app-review-container p {
+    font-size: 0.85rem;
+  }
+
+  .user-app-review-container iframe {
+    border-radius: 8px;
+    border: 1px solid #ccc;
+  }
+}

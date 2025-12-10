@@ -1,0 +1,208 @@
+/* Main container */
+.order {
+    width: 90%;
+    max-width: 1100px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+    font-size: 14px;
+    color: #505050;
+}
+
+/* Header */
+.order h3 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+/* Tabs styling */
+.order-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.order-tabs button {
+    padding: 8px 20px;
+    border: 1px solid #ddd;
+    background-color: #f5f5f5;
+    cursor: pointer;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: background 0.3s, color 0.3s, transform 0.2s;
+}
+
+.order-tabs button:hover {
+    background-color: #eaeaea;
+    transform: translateY(-2px);
+}
+
+.order-tabs .active-tab {
+    background-color: tomato;
+    color: #fff;
+    border-color: tomato;
+}
+
+/* Badge for order count */
+.order-tabs button::after {
+    content: attr(data-count);
+    display: inline-block;
+    margin-left: 8px;
+    background-color: #fff;
+    color: tomato;
+    font-weight: 600;
+    font-size: 12px;
+    padding: 2px 6px;
+    border-radius: 12px;
+}
+
+/* Order card styling */
+.order-item {
+    display: grid;
+    grid-template-columns: 0.5fr 2fr 1fr 1fr 1fr;
+    align-items: start;
+    gap: 20px;
+    border-radius: 12px;
+    background-color: #fafafa;
+    border: 1px solid #f0c0b0;
+    padding: 20px;
+    margin-bottom: 20px;
+    transition: transform 0.3s, box-shadow 0.3s;
+    animation: fadeInUp 0.5s ease forwards;
+}
+
+.order-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+/* Image in order */
+.order-item img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+/* Text styling */
+.order-item-food,
+.order-item-name {
+    font-weight: 600;
+}
+
+.order-item-name {
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+.order-item-address {
+    margin-bottom: 10px;
+    font-size: 13px;
+    color: #6d6d6d;
+}
+
+.order-item select {
+    background-color: #ffe8e4;
+    border: 1px solid tomato;
+    width: max(120px, 10vw);
+    padding: 8px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.order-item select:hover {
+    transform: scale(1.05);
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+
+/* Delete button */
+.delete-btn {
+    background-color: #ff4d4f;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.2s, transform 0.2s;
+}
+
+.delete-btn:hover {
+    background-color: #ff7875;
+    transform: scale(1.05);
+}
+
+/* Row fade-in animation */
+@keyframes fadeInUp {
+    0% { opacity: 0; transform: translateY(10px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive Design */
+@media (max-width: 1000px) {
+    .order-item {
+        grid-template-columns: 0.5fr 2fr 1fr;
+        gap: 15px;
+        padding: 15px;
+        font-size: 13px;
+    }
+
+    .order-item img {
+        width: 50px;
+        height: 50px;
+    }
+
+    .order-item select {
+        width: 100%;
+        max-width: 120px;
+        padding: 6px;
+        font-size: 12px;
+    }
+
+    .order-tabs {
+        flex-direction: column;
+        gap: 8px;
+    }
+}
+
+@media (max-width: 600px) {
+    .order-item {
+        grid-template-columns: 1fr;
+        padding: 12px;
+        gap: 10px;
+        font-size: 12px;
+    }
+
+    .order-item-name {
+        margin-top: 10px;
+    }
+
+    .order-item select {
+        width: 100%;
+        padding: 6px;
+        font-size: 12px;
+    }
+
+    .order-tabs button {
+        width: 100%;
+        text-align: center;
+        padding: 10px 0;
+    }
+
+    .order-tabs button::after {
+        margin-left: 5px;
+        padding: 1px 4px;
+        font-size: 11px;
+    }
+
+    .delete-btn {
+        width: 100%;
+        padding: 8px 0;
+        font-size: 12px;
+    }
+}

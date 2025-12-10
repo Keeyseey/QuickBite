@@ -1,0 +1,115 @@
+/* Main container */
+.add {
+    width: 90%;
+    max-width: 800px;
+    margin: 50px auto;
+    color: #4a4a4a;
+    font-size: 16px;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+}
+
+/* Flex column utility */
+.flex-col {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Image upload */
+.add-img-upload {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.add-img-upload img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 12px;
+    border: 2px dashed #ccc;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.add-img-upload:hover img {
+    transform: scale(1.05);
+    border-color: tomato;
+}
+
+/* Input and textarea */
+.add-product-name input,
+.add-product-description textarea,
+.add-category select,
+.add-price input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1.5px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+    transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+
+.add-product-name input:focus,
+.add-product-description textarea:focus,
+.add-category select:focus,
+.add-price input:focus {
+    border-color: tomato;
+    box-shadow: 0 0 8px rgba(255,99,71,0.2);
+}
+
+/* Category and price container */
+.add-category-price {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.add-category,
+.add-price {
+    flex: 1;
+    min-width: 120px;
+}
+
+/* Button */
+.add-btn {
+    width: 150px;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    background-color: tomato;
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.add-btn:hover {
+    background-color: #ff6347;
+    transform: translateY(-2px);
+}
+
+/* Labels */
+.add p {
+    font-weight: 500;
+    margin-bottom: 6px;
+}
+
+/* Responsive for mobile */
+@media (max-width: 768px) {
+    .add {
+        width: 95%;
+        margin: 30px auto;
+        padding: 20px;
+    }
+
+    .add-category-price {
+        flex-direction: column;
+    }
+}

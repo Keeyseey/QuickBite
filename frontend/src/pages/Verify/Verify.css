@@ -1,0 +1,78 @@
+/* ---------------- VERIFY PAGE ---------------- */
+.verify {
+    min-height: 60vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    background-color: #f9f9f9; /* light background for modern look */
+    text-align: center;
+}
+
+/* Spinner container */
+.verify .spinner {
+    width: 80px;
+    height: 80px;
+    border: 6px solid #e0e0e0;
+    border-top-color: tomato;
+    border-radius: 50%;
+    animation: spin 1s linear infinite, pulse 1.5s ease-in-out infinite alternate;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Smooth continuous rotation */
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Subtle scaling pulse */
+@keyframes pulse {
+    0% {
+        transform: rotate(0deg) scale(1);
+    }
+    50% {
+        transform: rotate(180deg) scale(1.1);
+    }
+    100% {
+        transform: rotate(360deg) scale(1);
+    }
+}
+
+/* Optional text under spinner */
+.verify p {
+    font-size: 16px;
+    color: #555;
+    font-weight: 500;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .verify .spinner {
+        width: 60px;
+        height: 60px;
+        border-width: 5px;
+    }
+
+    .verify p {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .verify .spinner {
+        width: 50px;
+        height: 50px;
+        border-width: 4px;
+    }
+
+    .verify p {
+        font-size: 13px;
+    }
+}

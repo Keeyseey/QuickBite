@@ -1,0 +1,122 @@
+/* Main container inherits from .add */
+.list {
+    width: 90%;
+    max-width: 1000px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+    font-size: 14px;
+    color: #4a4a4a;
+}
+
+/* Title */
+.list p:first-child {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+/* Table container */
+.list-table {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Table rows */
+.list-table-format {
+    display: grid;
+    grid-template-columns: 0.5fr 2fr 1fr 1fr 0.5fr;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 15px;
+    border-radius: 12px;
+    border: 1px solid #ececec;
+    background-color: #fafafa;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    animation: fadeIn 0.5s ease forwards;
+}
+
+.list-table-format:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+}
+
+/* Header row */
+.list-table-format.title {
+    background-color: #f4f4f4;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border: none;
+}
+
+/* Row images */
+.list-table-format img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+/* Text and buttons inside rows */
+.list-table-format p {
+    margin: 0;
+}
+
+.cursor {
+    cursor: pointer;
+    color: tomato;
+    margin-right: 10px;
+    transition: color 0.3s ease;
+}
+
+.cursor:hover {
+    color: #ff6347;
+}
+
+.edit-input {
+    width: 100%;
+    padding: 6px 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    outline: none;
+    transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+
+.edit-input:focus {
+    border-color: tomato;
+    box-shadow: 0 0 6px rgba(255,99,71,0.2);
+}
+
+/* Row fade-in animation */
+@keyframes fadeIn {
+    0% { opacity: 0; transform: translateY(10px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .list-table-format {
+        grid-template-columns: 1fr 2fr 1fr;
+        gap: 10px;
+        padding: 10px;
+    }
+
+    .list-table-format img {
+        width: 50px;
+        height: 50px;
+    }
+
+    .list-table-format.title {
+        display: none;
+    }
+
+    .list-table-format div span {
+        display: block;
+        margin-top: 5px;
+    }
+}

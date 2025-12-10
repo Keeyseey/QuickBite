@@ -1,0 +1,118 @@
+/* Container with subtle gradient */
+.add-rider-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  width: 100%;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f6fa, #e0e4ff);
+  animation: fadeIn 0.8s ease forwards;
+}
+
+/* Rider card */
+.add-rider-card {
+  background: #fff;
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 12px 25px rgba(0,0,0,0.08);
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.add-rider-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.12);
+}
+
+/* Title */
+.add-rider-card h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #333;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+/* Form */
+.add-rider-card form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 15px;
+}
+
+/* Labels */
+.add-rider-card label {
+  margin-bottom: 6px;
+  color: #555;
+  font-weight: 500;
+}
+
+/* Inputs */
+.add-rider-card input {
+  padding: 12px 15px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 1rem;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  width: 100%;
+}
+
+.add-rider-card input:focus {
+  border-color: tomato;
+  box-shadow: 0 0 8px rgba(255,99,71,0.2);
+  outline: none;
+}
+
+/* Submit button */
+.add-rider-card button {
+  padding: 12px 20px;
+  background-color: tomato;
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+  width: 100%;
+}
+
+.add-rider-card button:hover {
+  background-color: #ff6347;
+  transform: translateY(-2px);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .add-rider-card {
+    padding: 30px 20px;
+    width: 90%;
+  }
+
+  .add-rider-card h2 {
+    font-size: 1.6rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .add-rider-card {
+    padding: 20px 15px;
+  }
+
+  .add-rider-card input,
+  .add-rider-card button {
+    font-size: 0.9rem;
+    padding: 10px;
+  }
+}

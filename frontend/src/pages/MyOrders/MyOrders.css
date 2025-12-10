@@ -1,0 +1,140 @@
+.my-orders {
+    margin: 50px 20px;
+    font-family: 'Inter', 'Roboto', sans-serif;
+}
+
+/* ---------------- TABS ---------------- */
+.orders-tabs {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.orders-tabs .tab {
+    padding: 10px 20px;
+    border: 1px solid #c5c5c5;
+    border-radius: 8px;
+    background: #fff;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.orders-tabs .tab.active {
+    background: tomato;
+    color: #fff;
+    border-color: tomato;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.orders-tabs .tab:hover {
+    background: #ff6a4d;
+    color: #fff;
+}
+
+/* ---------------- ORDERS CONTAINER ---------------- */
+.my-orders .container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+/* ---------------- SINGLE ORDER CARD ---------------- */
+.my-orders-order {
+    display: grid;
+    grid-template-columns: 0.5fr 2fr 1fr 1fr 2fr 1fr;
+    align-items: center;
+    gap: 20px;
+    font-size: 14px;
+    padding: 15px 20px;
+    color: #454545;
+    border: 1px solid tomato;
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+}
+
+.my-orders-order:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+/* Parcel icon */
+.my-orders-order img {
+    width: 50px;
+    border-radius: 6px;
+}
+
+/* Highlight status dot */
+.my-orders-order p span {
+    color: tomato;
+}
+
+/* Bold text */
+.my-orders-order p b {
+    font-weight: 500;
+    color: #454545;
+}
+
+/* Refresh / action button */
+.my-orders-order button {
+    border: none;
+    padding: 8px 10px;
+    border-radius: 6px;
+    background-color: #ffe1e1;
+    cursor: pointer;
+    color: #454545;
+    transition: all 0.3s ease;
+}
+
+.my-orders-order button:hover {
+    background-color: tomato;
+    color: #fff;
+    transform: translateY(-2px);
+}
+
+/* ---------------- RESPONSIVE LAYOUT ---------------- */
+@media (max-width: 900px) {
+    .my-orders-order {
+        grid-template-columns: 1fr 2fr 1fr;
+        row-gap: 8px;
+        font-size: 13px;
+        padding: 12px 15px;
+    }
+    .my-orders-order button {
+        font-size: 12px;
+        padding: 6px 8px;
+    }
+    .orders-tabs {
+        gap: 12px;
+    }
+    .orders-tabs .tab {
+        flex: 1;
+        text-align: center;
+        padding: 8px 10px;
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 480px) {
+    .my-orders-order {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        padding: 10px;
+        font-size: 12px;
+    }
+    .my-orders-order p {
+        margin: 2px 0;
+    }
+    .orders-tabs {
+        gap: 8px;
+    }
+    .orders-tabs .tab {
+        padding: 6px 8px;
+        font-size: 11px;
+    }
+}
