@@ -7,7 +7,7 @@ import axios from 'axios';
 const Verify = () => {
   const [searchParams] = useSearchParams();
   const success = searchParams.get("success");
-  const orderId = searchParams.get("orderId");
+  const orderId = searchParams.get("orderId"); // keep for reference
   const { url, token } = useContext(StoreContext);
   const navigate = useNavigate();
 
@@ -19,24 +19,29 @@ const Verify = () => {
     }
 
     try {
+      // Connect to updated backend
       const response = await axios.get(
         `${url}/api/order/verify`,
         {
           headers: { Authorization: `Bearer ${token}` },
-          params: { success, orderId } // ✅ send as query params
+          params: { success, orderId } // Stripe sends success & orderId in query
         }
       );
 
       if (response.data.success) {
-        navigate("/myorders"); // ✅ redirect to My Orders
+        // Payment succeeded → redirect to My Orders
+        navigate("/myorders");
       } else {
-        navigate("/"); // fallback if payment failed
+        // Payment failed → show alert + redirect home
+        alert("Payment failed or cancelled.");
+        navigate("/");
       }
     } catch (err) {
       console.error("Verify order error:", err);
-      navigate("/"); // fallback
+      alert("Error verifying payment. Please try again.");
+      navigate("/");
     }
-  }
+  };
 
   useEffect(() => {
     verifyPayment();
