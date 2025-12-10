@@ -1,23 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import "./RiderList.css";
 import { toast } from "react-toastify";
+import { AdminContext } from "../../context/AdminContext";
 
-const RiderList = ({ url }) => {
+const RiderList = () => {
+  const { url, adminToken } = useContext(AdminContext); // ✅ get token & url from context
   const [riders, setRiders] = useState([]);
-  
-  // Admin token from localStorage
-  const token = localStorage.getItem("adminToken");
 
   const fetchRiders = async () => {
-    if (!token) {
+    if (!adminToken) {
       toast.error("Admin not logged in");
       return;
     }
 
     try {
       const res = await axios.get(`${url}/api/admin/riders`, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${adminToken}` },
       });
 
       if (res.data.success && Array.isArray(res.data.data)) {
@@ -33,7 +32,7 @@ const RiderList = ({ url }) => {
 
   useEffect(() => {
     fetchRiders();
-  }, []);
+  }, [adminToken]); // ✅ refetch if token changes
 
   return (
     <div className="rider-list-container">
