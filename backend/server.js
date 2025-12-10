@@ -23,16 +23,18 @@ const port = process.env.PORT || 4000;
 // CORS CONFIGURATION
 // -----------------------------
 const allowedOrigins = [
-  "https://quickbite-1-tes3.onrender.com",      // user frontend
-  "https://quickbite-admin-03en.onrender.com",  // admin frontend
-  "http://localhost:5173",                      // user local dev
-  "http://localhost:3000",                      // admin local dev
+  "https://quickbite-1-tes3.onrender.com",
+  "https://quickbite-admin-03en.onrender.com",
+  "http://localhost:5173",
+  "http://localhost:3000",
 ];
 
 app.use(cors({
   origin: function(origin, callback) {
-    if (!origin) return callback(null, true); // Postman or server-side requests
-    if (allowedOrigins.includes(origin)) return callback(null, true);
+    if (!origin) return callback(null, true); // server-to-server / Postman
+    const allowed = allowedOrigins.some(o => origin.startsWith(o));
+    if (allowed) return callback(null, true);
+    console.warn("Blocked by CORS:", origin);
     return callback(new Error("Not allowed by CORS"), false);
   },
   methods: ["GET", "POST", "PUT", "DELETE"],
@@ -56,6 +58,7 @@ export const upload = multer({ storage });
 
 // Serve uploads folder statically
 app.use("/uploads", express.static("uploads"));
+app.use("/images", express.static("uploads")); // legacy route
 
 // -----------------------------
 // DATABASE CONNECTION
@@ -66,7 +69,6 @@ connectDb();
 // HTTP SERVER + SOCKET.IO
 // -----------------------------
 const server = http.createServer(app);
-
 const io = new Server(server, {
   cors: {
     origin: allowedOrigins,
@@ -74,14 +76,12 @@ const io = new Server(server, {
     credentials: true,
   },
 });
-
 app.set("io", io);
 
 // -----------------------------
 // API ROUTES
 // -----------------------------
 app.use("/api/food", foodRouter);
-app.use("/images", express.static("uploads"));
 app.use("/api/user", userRouter);
 app.use("/api/cart", cartRouter);
 app.use("/api/order", orderRouter);
