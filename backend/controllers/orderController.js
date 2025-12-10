@@ -40,21 +40,27 @@ export const placeOrder = async (req, res) => {
 
     try {
         const userId = req.userId;
-        if (!userId)
-            return res.status(401).json({ success: false, message: "User not authenticated" });
-
         const { items, amount, address, deliveryFee, distance, location } = req.body;
 
-        if (!items || items.length === 0)
-            return res.status(400).json({ success: false, message: "Cart is empty" });
+        if (!items || items.length === 0) return res.status(400).json({ success: false, message: "Cart empty" });
 
-        if (!location || typeof location.lat !== "number" || typeof location.lng !== "number")
-            return res.status(400).json({ success: false, message: "Exact delivery location required" });
+        // ✅ Create a pending order in DB
+        const newOrder = new orderModel({
+            userId,
+            items,
+            amount,
+            deliveryFee,
+            distance,
+            address,
+            location,
+            payment: false,
+            rider: null
+        });
+        await newOrder.save();
 
-        // Stripe checkout creation
+        // Stripe checkout
         const stripe = getStripe();
         let session_url = null;
-
         if (stripe) {
             const line_items = items.map((item) => ({
                 price_data: {
@@ -64,30 +70,23 @@ export const placeOrder = async (req, res) => {
                 },
                 quantity: item.quantity,
             }));
+            if (deliveryFee) line_items.push({
+                price_data: { currency: "usd", product_data: { name: "Delivery Fee" }, unit_amount: Math.round(deliveryFee * PHP_TO_USD * 100) },
+                quantity: 1
+            });
 
-            if (deliveryFee && typeof deliveryFee === "number") {
-                line_items.push({
-                    price_data: {
-                        currency: "usd",
-                        product_data: { name: "Delivery Fee" },
-                        unit_amount: Math.round(deliveryFee * PHP_TO_USD * 100),
-                    },
-                    quantity: 1,
-                });
-            }
-
-            // Pass all order data via query params to verify endpoint
             const session = await stripe.checkout.sessions.create({
                 line_items,
                 mode: "payment",
-                success_url: `${frontend_url}/verify?success=true&userId=${userId}&items=${encodeURIComponent(JSON.stringify(items))}&amount=${amount}&deliveryFee=${deliveryFee}&distance=${distance}&address=${encodeURIComponent(JSON.stringify(address))}&location=${encodeURIComponent(JSON.stringify(location))}`,
-                cancel_url: `${frontend_url}/verify?success=false`,
+                success_url: `${frontend_url}/verify?success=true&orderId=${newOrder._id}`,
+                cancel_url: `${frontend_url}/verify?success=false&orderId=${newOrder._id}`,
             });
 
             session_url = session.url;
         }
 
-        res.json({ success: true, session_url }); // no order saved yet
+        // ✅ Send orderId + Stripe URL
+        res.json({ success: true, orderId: newOrder._id, session_url });
 
     } catch (error) {
         console.error("Place Order Error:", error);
@@ -95,53 +94,21 @@ export const placeOrder = async (req, res) => {
     }
 };
 
+
 // ======================================================
 // VERIFY ORDER PAYMENT
 // ======================================================
 export const verifyOrder = async (req, res) => {
     try {
-        const successQuery = req.query.success || req.body.success;
-        const orderIdQuery = req.query.orderId || req.body.orderId;
+        const { success, orderId } = req.query;
+        if (!orderId) return res.status(400).json({ success: false, message: "OrderId missing" });
 
-        if (successQuery === "true") {
-            // If orderId exists, update payment
-            if (orderIdQuery) {
-                await orderModel.findByIdAndUpdate(orderIdQuery, { payment: true });
-                return res.json({ success: true, message: "Paid" });
-            } else {
-                // For Stripe redirect without order yet, create order
-                const userId = req.query.userId;
-                const items = JSON.parse(req.query.items);
-                const amount = Number(req.query.amount);
-                const deliveryFee = Number(req.query.deliveryFee);
-                const distance = Number(req.query.distance);
-                const address = JSON.parse(req.query.address);
-                const location = JSON.parse(req.query.location);
-
-                const newOrder = new orderModel({
-                    userId,
-                    items,
-                    amount,
-                    deliveryFee,
-                    distance,
-                    address,
-                    location,
-                    rider: null,
-                    payment: true
-                });
-
-                await newOrder.save();
-
-                // Clear cart
-                await userModel.findByIdAndUpdate(userId, { cartData: {} });
-
-                return res.json({ success: true, message: "Paid", orderId: newOrder._id });
-            }
+        if (success === "true") {
+            await orderModel.findByIdAndUpdate(orderId, { payment: true });
+            return res.json({ success: true, message: "Payment verified", orderId });
         } else {
-            // Payment failed
-            if (orderIdQuery) {
-                await orderModel.findByIdAndDelete(orderIdQuery);
-            }
+            // Payment failed → delete pending order
+            await orderModel.findByIdAndDelete(orderId);
             return res.json({ success: false, message: "Payment failed" });
         }
     } catch (error) {
@@ -149,7 +116,6 @@ export const verifyOrder = async (req, res) => {
         res.status(500).json({ success: false, message: "Error verifying payment" });
     }
 };
-
 // ======================================================
 // GET USER ORDERS
 // ======================================================
