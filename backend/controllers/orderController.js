@@ -36,7 +36,7 @@ export const uploadDeliveryProof = multer({ storage }).single("deliveryProof");
 // PLACE ORDER
 // ======================================================
 export const placeOrder = async (req, res) => {
-    const frontend_url = "https://quickbite-frontend-j6bc.onrender.com/";
+    const frontend_url = "https://quickbite-frontend-j6bc.onrender.com";
 
     try {
         const userId = req.userId;
