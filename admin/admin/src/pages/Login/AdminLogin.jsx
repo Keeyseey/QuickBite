@@ -1,11 +1,11 @@
 import React, { useContext, useState } from "react";
 import { AdminContext } from "../../context/AdminContext";
-import axios from "axios";
 import { assets } from "../../assets/assets";
+import axios from "axios";
 import "./AdminLogin.css";
 
 const AdminLogin = ({ setShowLogin }) => {
-  const { loginAdmin } = useContext(AdminContext);
+  const { loginAdmin, url } = useContext(AdminContext); // ✅ get url from context
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
