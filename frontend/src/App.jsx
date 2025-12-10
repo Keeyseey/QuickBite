@@ -31,16 +31,26 @@ const AppRoutes = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Rider first
-  const { role: riderRole, loading: riderLoading } = useContext(RiderContext);
-  const { role: userRole, loading: userLoading } = useContext(StoreContext);
+  // IMPORTANT: Rider first
+  const {
+    role: riderRole,
+    loading: riderLoading,
+  } = useContext(RiderContext);
+
+  const {
+    role: userRole,
+    loading: userLoading,
+  } = useContext(StoreContext);
 
   const loading = riderLoading || userLoading;
 
-  // Choose role (rider > user)
-  const role = riderRole ? "rider" : userRole ? "user" : null;
+  // FIX: Decide role properly, rider always wins
+  const role = riderRole
+    ? "rider"
+    : userRole
+    ? "user"
+    : null;
 
-  // Rider welcome redirect
   useEffect(() => {
     if (!loading && role === "rider") {
       const show = sessionStorage.getItem("showRiderWelcome");
@@ -57,6 +67,16 @@ const AppRoutes = () => {
   const showNavbar =
     !(role === "rider" && location.pathname === "/rider-welcome");
 
+  // Render navbar conditionally
+  {showNavbar &&
+    (role === "rider" ? (
+      <RiderNavbar />
+    ) : role === "user" ? (
+      <Navbar setShowLogin={setShowLogin} />
+    ) : null // No navbar for logged out / no role
+    )}
+
+
   return (
     <>
       {showLogin && (
@@ -68,18 +88,16 @@ const AppRoutes = () => {
         />
       )}
 
-      {/* Correctly rendered Navbar */}
-      {showNavbar && (
-        role === "rider" ? (
+      {showNavbar &&
+        (role === "rider" ? (
           <RiderNavbar />
-        ) : role === "user" ? (
+        ) : (
           <Navbar setShowLogin={setShowLogin} />
-        ) : null
-      )}
+        ))}
 
       <div className="app">
         <Routes>
-          {/* HOME */}
+          {/* DEFAULT ROUTE */}
           <Route
             path="/"
             element={
@@ -100,6 +118,7 @@ const AppRoutes = () => {
               <Route path="/myorders" element={<MyOrders />} />
               <Route path="/search" element={<SearchResults />} />
               <Route path="/profile" element={<UserProfile />} />
+
             </>
           )}
 
@@ -115,10 +134,11 @@ const AppRoutes = () => {
             }
           />
 
-          {/* Rider welcome */}
+          {/* RIDER ROUTES */}
+          {/* RIDER WELCOME: always accessible */}
           <Route path="/rider-welcome" element={<RiderWelcome />} />
 
-          {/* RIDER PRIVATE */}
+          {/* RIDER PRIVATE ROUTES */}
           {role === "rider" && (
             <>
               <Route
@@ -139,13 +159,12 @@ const AppRoutes = () => {
               />
             </>
           )}
-
-          {/* 404 */}
+          
+          {/* FALLBACK */}
           <Route path="*" element={<div>404 Not Found</div>} />
         </Routes>
       </div>
 
-      {/* FOOTER ONLY FOR USERS */}
       {role === "user" && <Footer />}
     </>
   );
