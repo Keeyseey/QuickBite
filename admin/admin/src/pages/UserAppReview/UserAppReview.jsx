@@ -2,7 +2,7 @@ import React from 'react';
 import "./UserAppReview.css";
 
 
-const USER_APP_URL = "http://localhost:5173"; // User App URL
+const USER_APP_URL = "https://quickbite-frontend-j6bc.onrender.com"; // User App URL
 
 const UserAppReview = () => {
     return (
