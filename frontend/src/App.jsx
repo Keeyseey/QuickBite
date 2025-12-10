@@ -31,25 +31,11 @@ const AppRoutes = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // IMPORTANT: Rider first
-  const {
-    role: riderRole,
-    loading: riderLoading,
-  } = useContext(RiderContext);
-
-  const {
-    role: userRole,
-    loading: userLoading,
-  } = useContext(StoreContext);
+  const { role: riderRole, loading: riderLoading } = useContext(RiderContext);
+  const { role: userRole, loading: userLoading } = useContext(StoreContext);
 
   const loading = riderLoading || userLoading;
-
-  // FIX: Decide role properly, rider always wins
-  const role = riderRole
-    ? "rider"
-    : userRole
-    ? "user"
-    : null;
+  const role = riderRole ? "rider" : userRole ? "user" : null;
 
   useEffect(() => {
     if (!loading && role === "rider") {
@@ -63,19 +49,7 @@ const AppRoutes = () => {
 
   if (loading) return <div>Loading...</div>;
 
-  // Hide navbar on Rider Welcome page
-  const showNavbar =
-    !(role === "rider" && location.pathname === "/rider-welcome");
-
-  // Render navbar conditionally
-  {showNavbar &&
-    (role === "rider" ? (
-      <RiderNavbar />
-    ) : role === "user" ? (
-      <Navbar setShowLogin={setShowLogin} />
-    ) : null // No navbar for logged out / no role
-    )}
-
+  const showNavbar = !(role === "rider" && location.pathname === "/rider-welcome");
 
   return (
     <>
@@ -88,16 +62,16 @@ const AppRoutes = () => {
         />
       )}
 
+      {/* FIXED — navbar rendering ONLY inside return */}
       {showNavbar &&
         (role === "rider" ? (
           <RiderNavbar />
-        ) : (
+        ) : role === "user" ? (
           <Navbar setShowLogin={setShowLogin} />
-        ))}
+        ) : null)}
 
       <div className="app">
         <Routes>
-          {/* DEFAULT ROUTE */}
           <Route
             path="/"
             element={
@@ -109,7 +83,6 @@ const AppRoutes = () => {
             }
           />
 
-          {/* USER ROUTES */}
           {role === "user" && (
             <>
               <Route path="/cart" element={<Cart />} />
@@ -118,11 +91,9 @@ const AppRoutes = () => {
               <Route path="/myorders" element={<MyOrders />} />
               <Route path="/search" element={<SearchResults />} />
               <Route path="/profile" element={<UserProfile />} />
-
             </>
           )}
 
-          {/* RIDER LOGIN */}
           <Route
             path="/rider-login"
             element={
@@ -134,11 +105,8 @@ const AppRoutes = () => {
             }
           />
 
-          {/* RIDER ROUTES */}
-          {/* RIDER WELCOME: always accessible */}
           <Route path="/rider-welcome" element={<RiderWelcome />} />
 
-          {/* RIDER PRIVATE ROUTES */}
           {role === "rider" && (
             <>
               <Route
@@ -159,19 +127,18 @@ const AppRoutes = () => {
               />
             </>
           )}
-          
-          {/* FALLBACK */}
+
           <Route path="*" element={<div>404 Not Found</div>} />
         </Routes>
       </div>
 
+      {/* FIXED — Footer only for user */}
       {role === "user" && <Footer />}
     </>
   );
 };
 
 const App = () => {
-  // FIX: Rider must wrap StoreContext so rider loads FIRST
   return (
     <RiderContextProvider>
       <StoreContextProvider>
