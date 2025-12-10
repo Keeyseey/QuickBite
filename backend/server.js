@@ -23,10 +23,10 @@ const port = process.env.PORT || 4000;
 // CORS CONFIGURATION
 // -----------------------------
 const allowedOrigins = [
-  "https://quickbite-1-tes3.onrender.com",
+  "https://quickbite-frontend-j6bc.onrender.com",
   "https://quickbite-admin-03en.onrender.com",
   "http://localhost:5173",
-  "http://localhost:3000",
+  "http://localhost:5174",
 ];
 
 app.use(cors({
