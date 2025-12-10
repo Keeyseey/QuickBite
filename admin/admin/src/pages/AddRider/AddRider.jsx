@@ -1,13 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import './AddRider.css';
+import { AdminContext } from "../../context/AdminContext";
 
-const AddRider = ({ url }) => {
+const AddRider = () => {
+  const { url, adminToken } = useContext(AdminContext); // ✅ get token & url from context
   const [data, setData] = useState({ name: "", email: "", password: "" });
-
-  // Make sure this key matches what you stored during admin login
-  const token = localStorage.getItem("adminToken");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -17,7 +16,7 @@ const AddRider = ({ url }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!token) {
+    if (!adminToken) {
       toast.error("Admin not logged in");
       return;
     }
@@ -28,7 +27,7 @@ const AddRider = ({ url }) => {
         data,
         {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${adminToken}`,
             "Content-Type": "application/json"
           }
         }
