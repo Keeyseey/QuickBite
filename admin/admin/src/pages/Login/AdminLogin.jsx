@@ -15,7 +15,7 @@ const AdminLogin = ({ setShowLogin }) => {
     setLoading(true);
     setError("");
     try {
-      const res = await axios.post("http://localhost:4000/api/admin/login", { email, password });
+      const res = await axios.post(`${url}/api/admin/login`, { email, password });
 
       // Check role
       if (res.data.role !== "admin") {
