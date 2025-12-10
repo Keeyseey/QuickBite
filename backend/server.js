@@ -44,6 +44,12 @@ app.use(cors({
 // Body parser
 app.use(express.json());
 
+// Allow precise geolocation on Render
+app.use((req, res, next) => {
+  res.setHeader("Permissions-Policy", "geolocation=(self)");
+  next();
+});
+
 // -----------------------------
 // MULTER FILE UPLOAD
 // -----------------------------
