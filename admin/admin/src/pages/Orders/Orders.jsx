@@ -102,6 +102,29 @@ const Orders = () => {
     }
   };
 
+  const deleteAllDeliveredOrders = async () => {
+    if (!deliveredOrders.length) return toast.info("No delivered orders to delete.");
+    if (!window.confirm("Are you sure you want to delete ALL delivered orders?")) return;
+    if (!adminToken) return toast.error("Admin not logged in!");
+  
+    try {
+      const res = await axios.post(`${url}/api/order/delete-all-delivered`, {}, {
+        headers: { Authorization: `Bearer ${adminToken}` }
+      });
+  
+      if (res.data.success) {
+        toast.success("All delivered orders deleted!");
+        fetchAllOrders();
+      } else {
+        toast.error("Failed to delete delivered orders.");
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("Error deleting delivered orders.");
+    }
+  };
+
+
   const processingOrders = orders.filter(o => o.status !== "Delivered");
   const deliveredOrders = orders.filter(o => o.status === "Delivered");
 
@@ -154,17 +177,55 @@ const Orders = () => {
   return (
     <div className='order add'>
       <h3>Order Page</h3>
+  
+      {/* Tabs */}
       <div className="order-tabs">
-        <button className={activeTab === "active" ? "active-tab" : ""} onClick={() => setActiveTab("active")}>Active Orders</button>
-        <button className={activeTab === "delivered" ? "active-tab" : ""} onClick={() => setActiveTab("delivered")}>Delivered Orders</button>
+        <button
+          className={activeTab === "active" ? "active-tab" : ""}
+          onClick={() => setActiveTab("active")}
+        >
+          Active Orders
+        </button>
+        <button
+          className={activeTab === "delivered" ? "active-tab" : ""}
+          onClick={() => setActiveTab("delivered")}
+        >
+          Delivered Orders
+        </button>
       </div>
+  
+      {/* Delete All Delivered Orders Button */}
+      {activeTab === "delivered" && deliveredOrders.length > 0 && (
+        <button
+          onClick={deleteAllDeliveredOrders}
+          className="delete-all-btn"
+          style={{
+            margin: "15px 0",
+            backgroundColor: "#ff4d4f",
+            color: "#fff",
+            border: "none",
+            padding: "10px 15px",
+            borderRadius: "8px",
+            cursor: "pointer",
+            fontWeight: "600"
+          }}
+        >
+          Delete All Delivered Orders
+        </button>
+      )}
+  
+      {/* Order List */}
       <div className="order-list">
         {activeTab === "active"
-          ? processingOrders.length ? processingOrders.map(o => renderOrderItem(o)) : <p>No active orders</p>
-          : deliveredOrders.length ? deliveredOrders.map(o => renderOrderItem(o, true)) : <p>No delivered orders</p>}
+          ? processingOrders.length
+            ? processingOrders.map(o => renderOrderItem(o))
+            : <p>No active orders</p>
+          : deliveredOrders.length
+            ? deliveredOrders.map(o => renderOrderItem(o, true))
+            : <p>No delivered orders</p>
+        }
       </div>
     </div>
   );
-};
 
 export default Orders;
