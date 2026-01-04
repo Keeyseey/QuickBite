@@ -192,6 +192,32 @@
     color: #ff4d4f; /* 30+ mins */
     font-weight: 700;
 }
+/* Delete All Delivered Orders button */
+.delete-all-btn {
+    background-color: #ff4d4f;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.2s, transform 0.2s;
+}
+
+.delete-all-btn:hover {
+    background-color: #ff7875;
+    transform: scale(1.05);
+}
+
+/* Responsive for mobile */
+@media (max-width: 600px) {
+    .delete-all-btn {
+        width: 100%;
+        padding: 10px 0;
+        font-size: 12px;
+        margin-bottom: 10px;
+    }
+}
 
 @media (max-width: 600px) {
     .order-item {
