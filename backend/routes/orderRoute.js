@@ -27,6 +27,7 @@ orderRouter.get("/userorders", authMiddleware, userOrders);
 // =========================
 // ADMIN ROUTES
 // =========================
+
 orderRouter.get("/list", authAdmin, listOrders);
 
 // Admin assigns rider
@@ -65,5 +66,21 @@ orderRouter.get("/rider/orders", authRider, async (req, res) => {
 // DELETE ORDER
 // =========================
 orderRouter.post("/delete", authAdmin, deleteOrder);
+// =========================
+// DELETE ALL DELIVERED ORDERS
+// =========================
+orderRouter.post("/delete-all-delivered", authAdmin, async (req, res) => {
+  try {
+    const result = await orderModel.deleteMany({ status: "Delivered" });
+    res.json({
+      success: true,
+      message: `Deleted ${result.deletedCount} delivered orders`,
+    });
+  } catch (err) {
+    console.error("Delete All Delivered Orders Error:", err);
+    res.status(500).json({ success: false, message: "Failed to delete delivered orders" });
+  }
+});
+
 
 export default orderRouter;
