@@ -64,8 +64,8 @@ const Cart = ({ reviewMode = false }) => {
 
     let amt = 0;
     if (code === 'FREESHIP') {
-      amt = 2;
-      setMessage('Free delivery applied!');
+      amt = deliveryFee;
+      setMessage('Delivery fee discount applied!');
     } else {
       amt = getTotalCartAmount() * promoCodes[code];
       setMessage(`Promo applied! You saved ₱${amt.toFixed(2)}`);
@@ -91,7 +91,8 @@ const Cart = ({ reviewMode = false }) => {
   };
 
   const subtotal = getTotalCartAmount();
-  const deliveryFee = subtotal === 0 ? 0 : 2;
+  // Estimated minimum delivery fee (final fee calculated after pinning location)
+  const deliveryFee = subtotal === 0 ? 0 : 10;
   const total = subtotal + deliveryFee - discount;
 
   const cartEntries = Object.keys(cartItems)
@@ -210,7 +211,7 @@ const Cart = ({ reviewMode = false }) => {
             </div>
             <hr />
             <div className="cart-total-details">
-              <p>Delivery Fee</p>
+              <p>Delivery Fee (starting)</p>
               <p>₱{deliveryFee}</p>
             </div>
             <hr />
