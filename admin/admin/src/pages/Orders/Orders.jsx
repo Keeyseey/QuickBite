@@ -55,6 +55,7 @@ const Orders = () => {
 }, []);
 
 
+
   const statusHandler = async (event, orderId) => {
     if (!adminToken) return;
     try {
@@ -104,8 +105,9 @@ const Orders = () => {
   const processingOrders = orders.filter(o => o.status !== "Delivered");
   const deliveredOrders = orders.filter(o => o.status === "Delivered");
 
-  const getOrderAge = (createdAt) => {
-    const diffMs = now - new Date(createdAt).getTime();
+  const getOrderAge = (orderDate) => {
+    const diffMs = Date.now() - new Date(orderDate).getTime();
+  
     const seconds = Math.floor(diffMs / 1000);
     const minutes = Math.floor(seconds / 60);
     const hours = Math.floor(minutes / 60);
@@ -115,6 +117,7 @@ const Orders = () => {
     if (minutes < 60) return `${minutes} minute${minutes > 1 ? "s" : ""} ago`;
     return `${hours} hour${hours > 1 ? "s" : ""} ago`;
   };
+
 
   const renderOrderItem = (order, isDelivered = false) => (
     <div key={order._id} className="order-item">
@@ -134,7 +137,7 @@ const Orders = () => {
       </div>
       <p>Items: {order.items.length}</p>
       <p>₱{order.amount}</p>
-      <p className="order-time">🕒 {getOrderAge(order.createdAt)}</p>
+      <p className="order-time">🕒 {getOrderAge(order.date)}</p>
       <select onChange={e => statusHandler(e, order._id)} value={order.status}>
         <option value="Food Processing">Food Processing</option>
         <option value="Out for Delivery">Out for Delivery</option>
