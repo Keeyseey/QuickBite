@@ -10,6 +10,8 @@ const Orders = () => {
   const [orders, setOrders] = useState([]);
   const [riders, setRiders] = useState([]);
   const [activeTab, setActiveTab] = useState("active");
+  const [now, setNow] = useState(Date.now());
+
 
   const fetchAllOrders = async () => {
     if (!adminToken) return toast.error("Admin not logged in!");
@@ -43,6 +45,15 @@ const Orders = () => {
     fetchAllOrders();
     fetchRiders();
   }, [adminToken]); // ✅ refetch if token changes
+
+  useEffect(() => {
+  const interval = setInterval(() => {
+    setNow(Date.now());
+  }, 1000);
+
+  return () => clearInterval(interval);
+}, []);
+
 
   const statusHandler = async (event, orderId) => {
     if (!adminToken) return;
@@ -93,6 +104,18 @@ const Orders = () => {
   const processingOrders = orders.filter(o => o.status !== "Delivered");
   const deliveredOrders = orders.filter(o => o.status === "Delivered");
 
+  const getOrderAge = (createdAt) => {
+    const diffMs = now - new Date(createdAt).getTime();
+    const seconds = Math.floor(diffMs / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(minutes / 60);
+  
+    if (seconds < 10) return "Just now";
+    if (seconds < 60) return `${seconds} seconds ago`;
+    if (minutes < 60) return `${minutes} minute${minutes > 1 ? "s" : ""} ago`;
+    return `${hours} hour${hours > 1 ? "s" : ""} ago`;
+  };
+
   const renderOrderItem = (order, isDelivered = false) => (
     <div key={order._id} className="order-item">
       <img src={assets.parcel_icon} alt="" />
@@ -111,6 +134,7 @@ const Orders = () => {
       </div>
       <p>Items: {order.items.length}</p>
       <p>₱{order.amount}</p>
+      <p className="order-time">🕒 {getOrderAge(order.createdAt)}</p>
       <select onChange={e => statusHandler(e, order._id)} value={order.status}>
         <option value="Food Processing">Food Processing</option>
         <option value="Out for Delivery">Out for Delivery</option>
