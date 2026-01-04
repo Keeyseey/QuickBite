@@ -254,8 +254,10 @@ const RiderDashboard = () => {
                 <tr key={order._id}>
                   <td>#{order.orderNumber}</td>
                   <td>
-                    <div>{order.userName}</div>
-                    <div style={{ fontSize: "12px", color: "#555" }}>{order.userPhone}</div>
+                    <div className="user-info">
+                      <div className="user-name">{order.userName}</div>
+                      <div className="user-phone">{order.userPhone}</div>
+                    </div>
                   </td>
                   <td>{order.items.map((item, i) => (<div key={i}>{item.name} x {item.quantity}</div>))}</td>
                   <td>₱{order.amount}</td>
@@ -350,8 +352,10 @@ const RiderDashboard = () => {
                 <tr key={order._id}>
                   <td>#{order.orderNumber}</td>
                   <td>
-                    <div>{order.userName}</div>
-                    <div style={{ fontSize: "12px", color: "#555" }}>{order.userPhone}</div>
+                    <div className="user-info">
+                      <div className="user-name">{order.userName}</div>
+                      <div className="user-phone">{order.userPhone}</div>
+                    </div>
                   </td>
                   <td>{order.items.map((item, i) => (<div key={i}>{item.name} x {item.quantity}</div>))}</td>
                   <td>₱{order.amount}</td>
