@@ -61,19 +61,23 @@ const PlaceOrder = () => {
 
   const calculateDeliveryFee = (dist) => {
     if (getTotalCartAmount() === 0) return 0;
-
+  
+    // FIX: round distance to 2 decimals to avoid floating bugs
+    const normalizedDist = Number(dist.toFixed(2));
+  
     // FREE delivery within 1 km
-    if (dist <= 1) return 0;
-
-    const baseFee = 10;     // starts at ₱10 after 1 km
-    const perKmRate = 4;    // student-friendly rate
-    const maxFee = 60;      // price cap
-
-    const extraDistance = dist - 1;
+    if (normalizedDist <= 1) return 0;
+  
+    const baseFee = 10;   // starts at ₱10 after 1 km
+    const perKmRate = 4;  // student-friendly rate
+    const maxFee = 60;
+  
+    const extraDistance = normalizedDist - 1;
     const fee = baseFee + extraDistance * perKmRate;
-
+  
     return Math.min(Math.round(fee), maxFee);
   };
+
 
   // -----------------------
   // Location functions
