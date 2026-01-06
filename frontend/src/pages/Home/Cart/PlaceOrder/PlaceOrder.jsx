@@ -5,7 +5,7 @@ import axios from "axios";
 import { useNavigate } from 'react-router-dom';
 import PickLocationMap from "../../../../components/PickLocationMap/PickLocationMap";
 
-const LOCATIONIQ_API_KEY = "pk.cd7daaf031dfa564dcd1df8d341572bf";
+const LOCATIONIQ_API_KEY = process.env.REACT_APP_LOCATIONIQ_API_KEY;
 
 const PlaceOrder = () => {
   const {
